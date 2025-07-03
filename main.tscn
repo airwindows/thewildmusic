@@ -1,0 +1,97 @@
+[gd_scene load_steps=2 format=3 uid="uid://ry332s6pkx3v"]
+
+[ext_resource type="Script" uid="uid://crds0wgb60deh" path="res://Main.cs" id="1_ig7tw"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ig7tw")
+
+[node name="PianoRoll" type="TextureRect" parent="."]
+texture_filter = 1
+offset_left = 30.0
+offset_top = 560.0
+offset_right = 542.0
+offset_bottom = 688.0
+expand_mode = 1
+
+[node name="ZoomW" type="HSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 129.0
+offset_right = 80.0
+offset_bottom = 145.0
+min_value = 1.0
+max_value = 16.0
+value = 8.0
+
+[node name="ScrollW" type="HSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 129.0
+offset_right = 160.0
+offset_bottom = 145.0
+min_value = 1.0
+max_value = 512.0
+value = 1.0
+
+[node name="KeyPrimary" type="HSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = -26.0
+offset_right = 180.0
+offset_bottom = -10.0
+max_value = 11.0
+
+[node name="KeySecondary" type="HSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 282.0
+offset_top = -25.0
+offset_right = 448.0
+offset_bottom = -9.0
+max_value = 11.0
+
+[node name="ZoomH" type="VSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = -22.0
+offset_top = 68.0
+offset_right = -6.0
+offset_bottom = 132.0
+min_value = 1.0
+max_value = 16.0
+value = 8.0
+
+[node name="ScrollH" type="VSlider" parent="PianoRoll"]
+layout_mode = 0
+offset_left = -22.0
+offset_top = -12.0
+offset_right = -6.0
+offset_bottom = 52.0
+min_value = 1.0
+max_value = 128.0
+value = 1.0
+
+[node name="Note" type="Label" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 126.0
+offset_right = 284.0
+offset_bottom = 149.0
+text = "A"
+
+[node name="KeyPLabel" type="Label" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 195.0
+offset_top = -30.0
+offset_right = 248.0
+offset_bottom = -7.0
+text = "A"
+
+[node name="KeySLabel" type="Label" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 459.0
+offset_top = -29.0
+offset_right = 512.0
+offset_bottom = -6.0
+text = "A"
+
+[connection signal="value_changed" from="PianoRoll/KeyPrimary" to="." method="DrawKeyboard"]
+[connection signal="value_changed" from="PianoRoll/KeySecondary" to="." method="DrawKeyboard"]
