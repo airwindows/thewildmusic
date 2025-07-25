@@ -7,12 +7,28 @@ public partial class Main : Node2D
 	private Image _keysDisplay;
 	private Image _cropDisplay;
 	private ImageTexture _displayTexture;
+
+	private string[][] chords = new string[12][];
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		int createWidth = (int)GetNode<TextureRect>("PianoRoll").GetRect().Size.X;
+		chords[0] = ["C", "Dm", "Em", "F", "G7", "Am", "Bm"]; //C
+		chords[1] = ["G", "Am", "Bm", "C", "D7", "Em", "F#m"]; //G
+		chords[2] = ["D", "Em", "F#m", "G", "A7", "Bm", "C#m"]; //D
+		chords[3] = ["A", "Bm", "C#m", "D", "E7", "F#m", "G#m"]; //A
+		chords[4] = ["E", "F#m", "G#m", "A", "B7", "C#m", "D#m"]; //E
+		chords[5] = ["B", "C#m", "D#m", "E", "F#7", "G#m", "A#m"]; //B
+		chords[6] = ["F#", "G#m", "A#m", "B", "Db7", "Ebm", "Fm"]; //F#
+		chords[7] = ["Db", "Ebm", "Fm", "Gb", "Ab7", "Bbm", "Cm"]; //Db
+		chords[8] = ["Ab", "Bbm", "Cm", "Db", "Eb7", "Fm", "Gm"]; //Ab
+		chords[9] = ["Eb", "Fm", "Gm", "Ab", "Bb7", "Cm", "Dm"]; //Eb
+		chords[10]= ["Bb", "Cm", "Dm", "Eb", "F7", "Gm", "Am"]; //Bb
+		chords[11]= ["F", "Gm", "Am", "Bb", "C7", "Dm", "Em"]; //F
+		//we'll be using this to generate chord lists
+		//in each key, 0-Major 1-Dorian 2-Phrygian 3-Lydian 4-Mixolydian 5-Minor 6-Locrian
+		
 		int createHeight = (int)GetNode<TextureRect>("PianoRoll").GetRect().Size.Y;
-		_display = Image.CreateEmpty(createWidth, createHeight, false, Image.Format.Rgbah);
+		_display = Image.CreateEmpty(32, createHeight, false, Image.Format.Rgbah);
 		DrawKeyboard(0.0f);
 	}
 	public void UpdateSecondary(float keyUpdateEvent)
@@ -24,6 +40,7 @@ public partial class Main : Node2D
 		int mode = ((int)GetNode<Slider>("PianoRoll/Mode").Value);
 		int modeApply = 0;
 		string modeDisplay = "";
+		string chordsDisplay = "";
 		string relativeKey = "";
 		switch (mode)
 		{
@@ -37,7 +54,28 @@ public partial class Main : Node2D
 		}
 		int keyPrimary = (((int) GetNode<Slider>("PianoRoll/KeyPrimary").Value)*5)%12;
 		int keySecondary = (((int)GetNode<Slider>("PianoRoll/KeySecondary").Value)*5)%12;
-		int createWidth = (int)GetNode<TextureRect>("PianoRoll").GetRect().Size.X;
+
+		for (int c = 0; c < 7; c++) chordsDisplay += chords[((keyPrimary)*5)%12][(c+mode)%7]+" ";
+
+		int keyOffset = (int)(GetNode<Slider>("PianoRoll/KeyPrimary").Value-GetNode<Slider>("PianoRoll/KeySecondary").Value);
+		if (keyOffset > 6) keyOffset = 6;
+		if (keyOffset < -6) keyOffset = -6;
+		int chordStartKey = (int)GetNode<Slider>("PianoRoll/KeyPrimary").Value;
+		if (keyOffset > 0)
+		{
+			chordsDisplay += "\rRecede - ";
+			for (int o = 1; o <= keyOffset; ++o) chordsDisplay += chords[(12+chordStartKey-o)%12][3]+" ";
+		}
+
+		if (keyOffset < 0)
+		{
+			chordsDisplay += "\rAdvance - ";
+			for (int o = 1; o <= -keyOffset; ++o) chordsDisplay += chords[(12+chordStartKey+o)%12][6]+" ";
+		}
+		//this is kinda messy, but it will present the out-of-key chords correctly		
+		GetNode<Label>("PianoRoll/Chords").Text = chordsDisplay;
+		
+		int createWidth = 32;
 		int createHeight = (int)GetNode<TextureRect>("PianoRoll").GetRect().Size.Y;
 		_keysDisplay = Image.CreateEmpty(createWidth, createHeight, false, Image.Format.Rgbah);
 		_keysDisplay.Fill(Colors.Black);
@@ -72,6 +110,7 @@ public partial class Main : Node2D
 			case 10: keyMainColor = Colors.Gold; GetNode<Label>("PianoRoll/KeyRLabel").Text = relativeKey+modeDisplay; break;
 			case 11: keyMainColor = Colors.Orange; GetNode<Label>("PianoRoll/KeyRLabel").Text = relativeKey+modeDisplay; break;
 		} //assigns color to what the key is
+
 		switch (((keyPrimary)*5)%12) //assigns physical key colors and nothing else
 		{
 			case 0: GetNode<Label>("PianoRoll/KeyPLabel").Text = "C"; break;
@@ -89,7 +128,7 @@ public partial class Main : Node2D
 		} //assigns color to what the key is
 		
 		Color keyAlternateColor = Colors.Black;
-		switch (((keySecondary)*5)%12) //assigns physical key colors and nothing else
+		switch (((keySecondary+12)*5)%12) //assigns physical key colors and nothing else
 		{
 			case 0: keyAlternateColor = Colors.Tomato; GetNode<Label>("PianoRoll/KeySLabel").Text = "C"; break;
 			case 1: keyAlternateColor = Colors.Firebrick; GetNode<Label>("PianoRoll/KeySLabel").Text = "G"; break;
@@ -105,8 +144,7 @@ public partial class Main : Node2D
 			case 11: keyAlternateColor = Colors.Orange; GetNode<Label>("PianoRoll/KeySLabel").Text = "F"; break;
 		} //assigns color to what the key is
 
-		float layerAlpha = 0.618f;//(float)GetNode<Slider>("PianoRoll/Alpha").Value;
-		
+		float layerAlpha = 0.618f;
 		for (int y = -12; y < createHeight; y++)
 		{
 			Color physicalKeyColor = Colors.White;
@@ -160,15 +198,91 @@ public partial class Main : Node2D
 				case 10: break;
 				case 11: linePrimaryColor = keyMainColor; break;
 			}
-			
-			if (linePrimaryColor.S < 0.1 && lineSecondaryColor.S > 0.1) linePrimaryColor = lineSecondaryColor;
+			bool usedSecondaryColor = false;
+			if (linePrimaryColor.S < 0.1 && lineSecondaryColor.S > 0.1)
+			{
+				linePrimaryColor = lineSecondaryColor; //if a stripe would not be included, but secondary has it,
+				usedSecondaryColor = true; //draw it in secondary color AND prepare to add it to display keyboard too
+			} //so you can easily see which notes are added to what's primarily the primary key.
 			linePrimaryColor = linePrimaryColor.Lerp(physicalKeyColor, layerAlpha);
 			
-			if (y >= 0)
+			if (y >= 0) //begin drawing stripes in specified colors
 			{
 				_keysDisplay.FillRect(new Rect2I(0,y,createWidth,1),linePrimaryColor);
-				if ((y+modeApply+keyPrimary) % 12 == 0) linePrimaryColor = Color.Color8(255,0,0,255);
-				_keysDisplay.FillRect(new Rect2I(0, y, 5, 1), linePrimaryColor);
+				if ((y + modeApply + keyPrimary) % 12 == 0) //make a red dot indicating root note
+				{
+					_keysDisplay.FillRect(new Rect2I(0, y, 1, 1), Color.Color8(255, 0, 0, 255));
+				}
+
+				if (y < 12) //if it's the first 12 stripes, update the display keyboard to match
+				{
+					if (linePrimaryColor.S > 0.1f) linePrimaryColor = physicalKeyColor;
+					else linePrimaryColor = Colors.Gray;
+					if (usedSecondaryColor) linePrimaryColor = linePrimaryColor.Lerp(keyAlternateColor,0.5f);
+					switch (y % 12) //three octaves of keyboard display
+					{
+						case 0: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyC").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyC").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyC").Color = linePrimaryColor;
+							break;
+						case 1: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyCD").Color = linePrimaryColor; 
+							GetNode<ColorRect>("PianoRoll/Octave2/keyCD").Color = linePrimaryColor; 
+							GetNode<ColorRect>("PianoRoll/Octave3/keyCD").Color = linePrimaryColor; 
+							break;
+						case 2: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyD").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyD").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyD").Color = linePrimaryColor;
+							break;
+						case 3: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyDE").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyDE").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyDE").Color = linePrimaryColor;
+							break;
+						case 4: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyE").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyE").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyE").Color = linePrimaryColor;
+							break;
+						case 5: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyF").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyF").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyF").Color = linePrimaryColor;
+							break;
+						case 6: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyFG").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyFG").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyFG").Color = linePrimaryColor;
+							break;
+						case 7: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyG").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyG").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyG").Color = linePrimaryColor;
+							break;
+						case 8: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyGA").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyGA").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyGA").Color = linePrimaryColor;
+							break;
+						case 9: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyA").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyA").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyA").Color = linePrimaryColor;
+							break;
+						case 10: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyAB").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyAB").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyAB").Color = linePrimaryColor;
+							break;
+						case 11: 
+							GetNode<ColorRect>("PianoRoll/Octave1/keyB").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave2/keyB").Color = linePrimaryColor;
+							GetNode<ColorRect>("PianoRoll/Octave3/keyB").Color = linePrimaryColor;
+							break;
+					}
+				}
 			}
 			
 			
@@ -184,24 +298,23 @@ public partial class Main : Node2D
 			float boundsHeight = GetNode<TextureRect>("PianoRoll").GetRect().Size.Y;
 			float clickX = (eventMouseButton.Position.X-GetNode<TextureRect>("PianoRoll").GlobalPosition.X)-0.5f;
 			float clickY = (boundsHeight-(eventMouseButton.Position.Y-GetNode<TextureRect>("PianoRoll").GlobalPosition.Y))-0.5f;
-			double zoomH = GetNode<Slider>("PianoRoll/ZoomH").Value;
-			double zoomW = GetNode<Slider>("PianoRoll/ZoomW").Value;
-			double scrollH = GetNode<ScrollBar>("PianoRoll/ScrollH").Value;
-			double scrollW = GetNode<ScrollBar>("PianoRoll/ScrollW").Value;
+			double lowest = (double) GetNode<TextEdit>("PianoRoll/Lowest").Text.ToFloat();
+			double highest = (double) GetNode<TextEdit>("PianoRoll/Falsetto").Text.ToFloat()+1;
+			double zoomH = 64.0;
+			if (highest > lowest+3.0) zoomH = 256.0/(highest-lowest);
 			if (clickX < boundsWidth && clickY < boundsHeight && clickX > 0.0 && clickY > 0.0)
 			{
-				clickX /= (float)zoomW;
-				clickX += (float)scrollW;
+				clickX /= 15.8f;
 				clickY /= (float)zoomH;
-				clickY += (float)scrollH;
+				clickY += (float)lowest;
 				if (_display.GetPixel((int) clickX, (int) clickY).A < 0.1 && _keysDisplay.GetPixel((int) clickX, (int) clickY).OkHslS > 0.1)
 				{
 					Color voiceColor = Color.Color8(0, 0, 0, 255);
-					int lowest = GetNode<TextEdit>("PianoRoll/Lowest").Text.ToInt();
+					int keyPrimary = (((int) GetNode<Slider>("PianoRoll/KeyPrimary").Value)*5)%12;
+					int keySharpsFlats = ((keyPrimary) * 5) % 12; //used later to pick correct sharp or flat signifier
 					int belt = GetNode<TextEdit>("PianoRoll/Belt").Text.ToInt()+1;
-					int falsetto = GetNode<TextEdit>("PianoRoll/Falsetto").Text.ToInt()+1;
 					if (clickY >= lowest && clickY <= belt) voiceColor = Color.Color8((byte)(255-((belt-clickY)*7)), 0, (byte)(255-((clickY-lowest)*7)), 255);
-					if (clickY > belt && clickY <= falsetto) voiceColor = Color.Color8(0, 255, 0, 255);
+					if (clickY > belt && clickY <= highest) voiceColor = Color.Color8(0, 255, 0, 255);
 
 					if (voiceColor.OkHslS > 0.1) _display.SetPixel((int) clickX, (int) clickY, voiceColor);
 					string noteName = "";
@@ -209,25 +322,41 @@ public partial class Main : Node2D
 					switch (noteNumber)
 					{
 						case 0: noteName = "A"; break;
-						case 1: noteName = "Bb"; break;
+						case 1: 
+							noteName = "Bb";
+							if (keySharpsFlats > 4 && keySharpsFlats < 7) noteName = "A#";
+							break;
 						case 2: noteName = "B"; break;
 						case 3: noteName = "C"; break;
-						case 4: noteName = "C#"; break;
+						case 4:
+							noteName = "Db";
+							if (keySharpsFlats > 1 && keySharpsFlats < 7) noteName = "C#";
+							break;
 						case 5: noteName = "D"; break;
-						case 6: noteName = "D#"; break;
+						case 6:
+							noteName = "Eb";
+							if (keySharpsFlats > 3 && keySharpsFlats < 8) noteName = "D#";
+							break;
 						case 7: noteName = "E"; break;
 						case 8: noteName = "F"; break;
-						case 9: noteName = "F#"; break;
+						case 9:
+							noteName = "Gb";
+							if (keySharpsFlats > 0 && keySharpsFlats < 5) noteName = "F#";
+							break;
 						case 10: noteName = "G"; break;
-						case 11: noteName = "G#"; break;
+						case 11:
+							noteName = "Ab";
+							if (keySharpsFlats > 2 && keySharpsFlats < 7) noteName = "G#";
+							break;
 					}
 					float note = 13.75f * float.Pow(2.0f,(float.Floor(clickY) - 9.0f) / 12.0f);
 					if (voiceColor.OkHslS > 0.1) GetNode<Beep>("PianoRoll/Beep").PlayNote(note,(voiceColor.G8 == 255));
-					GetNode<Label>("PianoRoll/Note").Text = ((int)(clickY)).ToString()+" "+((int)(clickY+3)%12).ToString() + " " +noteName;
+					GetNode<Label>("PianoRoll/Note").Text = "#"+((int)(clickY))+" - " + noteName;
 					//clickY-9%12 gives you 0 = A to 11 = G#.
 				}
 				else
 				{
+					GetNode<Beep>("PianoRoll/Beep").PlayNote(0.0f,true);
 					_display.SetPixel((int) clickX, (int) clickY, Color.Color8(0,0,0,0));
 				}
 			}
@@ -238,15 +367,16 @@ public partial class Main : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		double zoomH = GetNode<Slider>("PianoRoll/ZoomH").Value;
-		double zoomW = GetNode<Slider>("PianoRoll/ZoomW").Value;
-		double scrollH = GetNode<ScrollBar>("PianoRoll/ScrollH").Value;
-		double scrollW = GetNode<ScrollBar>("PianoRoll/ScrollW").Value;
-		_cropDisplay = Image.CreateEmpty((int)(_display.GetSize().X/zoomW), (int)(_display.GetSize().Y/zoomH), false, Image.Format.Rgbah);
-		_cropDisplay.BlitRect(_keysDisplay, new Rect2I((int)scrollW, (int)scrollH, (int)(_keysDisplay.GetSize().X/zoomW), (int)(_keysDisplay.GetSize().Y/zoomH)), new Vector2I(0, 0));
-		_cropDisplay.BlendRect(_display, new Rect2I((int)scrollW, (int)scrollH, (int)(_display.GetSize().X/zoomW), (int)(_display.GetSize().Y/zoomH)), new Vector2I(0, 0));
+		double lowest = GetNode<TextEdit>("PianoRoll/Lowest").Text.ToFloat();
+		double highest = GetNode<TextEdit>("PianoRoll/Falsetto").Text.ToFloat()+1.0;
+		double zoomH = 64.0;
+		if (highest > lowest+3.0) zoomH = 256.0/(highest-lowest);
+		_cropDisplay = Image.CreateEmpty((int)(_display.GetSize().X), (int)(_display.GetSize().Y/zoomH), false, Image.Format.Rgbah);
+		_cropDisplay.BlitRect(_keysDisplay, new Rect2I(0, (int)lowest, (int)(_keysDisplay.GetSize().X), (int)(_keysDisplay.GetSize().Y/zoomH)), new Vector2I(0, 0));
+		_cropDisplay.BlendRect(_display, new Rect2I(0, (int)lowest, (int)(_display.GetSize().X), (int)(_display.GetSize().Y/zoomH)), new Vector2I(0, 0));
 		_cropDisplay.FlipY();
 		_displayTexture = ImageTexture.CreateFromImage(_cropDisplay);
 		GetNode<TextureRect>("PianoRoll").Texture = _displayTexture;
 	}
 }
+

@@ -1,24 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://ry332s6pkx3v"]
+[gd_scene load_steps=7 format=3 uid="uid://ry332s6pkx3v"]
 
 [ext_resource type="Script" uid="uid://crds0wgb60deh" path="res://Main.cs" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://sjcvl7g5yicf" path="res://Beep.cs" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://dflx6sy4033ql" path="res://RangeUpdate.cs" id="3_h2yge"]
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_h2yge"]
-buffer_length = 0.25
+buffer_length = 0.33
 
 [sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
-font_size = 24
+font_size = 18
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font_size = 18
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")
 
 [node name="PianoRoll" type="TextureRect" parent="."]
 texture_filter = 1
-offset_left = 36.0
-offset_top = 321.0
-offset_right = 548.0
-offset_bottom = 577.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 506.0
+offset_bottom = 260.0
 expand_mode = 1
 
 [node name="Beep" type="AudioStreamPlayer" parent="PianoRoll" node_paths=PackedStringArray("Player")]
@@ -26,211 +29,573 @@ stream = SubResource("AudioStreamGenerator_h2yge")
 script = ExtResource("2_0xm2m")
 Player = NodePath(".")
 
-[node name="ZoomW" type="HSlider" parent="PianoRoll"]
-layout_mode = 0
-offset_left = 576.0
-offset_top = 273.0
-offset_right = 640.0
-offset_bottom = 289.0
-min_value = 1.0
-max_value = 16.0
-step = 0.0
-value = 8.0
-
-[node name="ScrollW" type="HScrollBar" parent="PianoRoll"]
-layout_mode = 0
-offset_left = -1.0
-offset_top = 262.0
-offset_right = 511.0
-offset_bottom = 278.0
-max_value = 64.0
-page = 16.0
-
-[node name="Alpha" type="HSlider" parent="PianoRoll"]
-layout_mode = 0
-offset_left = 364.0
-offset_top = 414.0
-offset_right = 428.0
-offset_bottom = 430.0
-max_value = 1.0
-step = 0.1
-value = 0.6
-
 [node name="KeyPrimary" type="HSlider" parent="PianoRoll"]
 layout_mode = 0
-offset_left = -19.0
-offset_top = 344.0
-offset_right = 81.0
-offset_bottom = 360.0
+offset_left = 37.0
+offset_top = 456.0
+offset_right = 137.0
+offset_bottom = 472.0
 max_value = 11.0
 
 [node name="KeySecondary" type="HSlider" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 265.0
-offset_top = 344.0
-offset_right = 365.0
-offset_bottom = 360.0
-max_value = 11.0
+offset_left = 359.0
+offset_top = 456.0
+offset_right = 459.0
+offset_bottom = 472.0
+min_value = -6.0
+max_value = 18.0
 
 [node name="Mode" type="HSlider" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 128.0
-offset_top = 344.0
-offset_right = 228.0
-offset_bottom = 360.0
+offset_left = 205.0
+offset_top = 456.0
+offset_right = 305.0
+offset_bottom = 472.0
 max_value = 6.0
-
-[node name="ZoomH" type="VSlider" parent="PianoRoll"]
-layout_mode = 0
-offset_left = 569.0
-offset_top = 4.0
-offset_right = 585.0
-offset_bottom = 247.0
-min_value = 1.0
-max_value = 16.0
-step = 0.0
-value = 8.0
-
-[node name="ScrollH" type="VScrollBar" parent="PianoRoll"]
-layout_mode = 0
-offset_left = -25.0
-offset_top = 4.0
-offset_right = -9.0
-offset_bottom = 257.0
-min_value = 36.0
-max_value = 49.0
-page = 12.0
-value = 37.0
 
 [node name="Note" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = -9.0
-offset_top = 284.0
-offset_right = 376.0
-offset_bottom = 318.0
-text = "A"
+offset_left = 5.0
+offset_top = 331.0
+offset_right = 501.0
+offset_bottom = 365.0
 label_settings = SubResource("LabelSettings_h2yge")
+horizontal_alignment = 1
+
+[node name="Chords" type="Label" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 360.0
+offset_right = 501.0
+offset_bottom = 417.0
+text = "chords
+extra"
+label_settings = SubResource("LabelSettings_1bvp3")
 horizontal_alignment = 1
 
 [node name="KeyRLabel" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 108.0
-offset_top = 315.0
-offset_right = 217.0
-offset_bottom = 338.0
+offset_left = 197.0
+offset_top = 427.0
+offset_right = 306.0
+offset_bottom = 450.0
 text = "Mode"
 horizontal_alignment = 1
 
 [node name="KeySLabel" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 277.0
-offset_top = 315.0
-offset_right = 358.0
-offset_bottom = 338.0
+offset_left = 371.0
+offset_top = 427.0
+offset_right = 452.0
+offset_bottom = 450.0
 text = "Secondary"
 horizontal_alignment = 1
 
 [node name="KeyPLabel" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = -16.0
-offset_top = 315.0
-offset_right = 71.0
-offset_bottom = 338.0
+offset_left = 40.0
+offset_top = 427.0
+offset_right = 127.0
+offset_bottom = 450.0
 text = "Primary"
 horizontal_alignment = 1
 
 [node name="KeyRLabel2" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 100.0
-offset_top = 364.0
-offset_right = 244.0
-offset_bottom = 387.0
+offset_left = 177.0
+offset_top = 476.0
+offset_right = 321.0
+offset_bottom = 499.0
 text = "Mode/Relative Key"
 horizontal_alignment = 1
 
 [node name="KeySLabel2" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 261.0
-offset_top = 364.0
-offset_right = 374.0
-offset_bottom = 387.0
+offset_left = 355.0
+offset_top = 476.0
+offset_right = 468.0
+offset_bottom = 499.0
 text = "Secondary Key"
 horizontal_alignment = 1
 
 [node name="KeyPLabel2" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = -16.0
-offset_top = 364.0
-offset_right = 78.0
-offset_bottom = 387.0
+offset_left = 40.0
+offset_top = 476.0
+offset_right = 134.0
+offset_bottom = 499.0
 text = "Primary Key"
 horizontal_alignment = 1
 
 [node name="Lowest" type="TextEdit" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 486.0
-offset_top = 358.0
-offset_right = 518.0
-offset_bottom = 394.0
+offset_left = 109.0
+offset_top = 508.0
+offset_right = 141.0
+offset_bottom = 544.0
 text = "36"
 placeholder_text = "LOW"
 script = ExtResource("3_h2yge")
 
 [node name="Singing1" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 417.0
-offset_top = 364.0
-offset_right = 481.0
-offset_bottom = 387.0
+offset_left = 40.0
+offset_top = 514.0
+offset_right = 104.0
+offset_bottom = 537.0
 text = "Lowest"
 horizontal_alignment = 1
 
 [node name="Belt" type="TextEdit" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 487.0
-offset_top = 320.0
-offset_right = 518.0
-offset_bottom = 356.0
+offset_left = 277.0
+offset_top = 508.0
+offset_right = 308.0
+offset_bottom = 544.0
 text = "62"
 placeholder_text = "TOP"
 script = ExtResource("3_h2yge")
 
 [node name="Singing2" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 412.0
-offset_top = 326.0
-offset_right = 485.0
-offset_bottom = 349.0
+offset_left = 202.0
+offset_top = 514.0
+offset_right = 275.0
+offset_bottom = 537.0
 text = "Top Belt"
 horizontal_alignment = 1
 
 [node name="Falsetto" type="TextEdit" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 486.0
-offset_top = 282.0
-offset_right = 518.0
-offset_bottom = 318.0
+offset_left = 457.0
+offset_top = 508.0
+offset_right = 489.0
+offset_bottom = 544.0
 text = "68"
 placeholder_text = "F/W"
 script = ExtResource("3_h2yge")
 
 [node name="Singing3" type="Label" parent="PianoRoll"]
 layout_mode = 0
-offset_left = 387.0
-offset_top = 288.0
-offset_right = 482.0
-offset_bottom = 311.0
+offset_left = 358.0
+offset_top = 514.0
+offset_right = 453.0
+offset_bottom = 537.0
 text = "Top Falsetto"
 horizontal_alignment = 1
 
-[node name="Octave1" type="ColorRect" parent="."]
-offset_left = 49.0
-offset_top = 101.0
-offset_right = 349.0
-offset_bottom = 201.0
+[node name="Octave1" type="ColorRect" parent="PianoRoll"]
+layout_mode = 0
+offset_left = -3.0
+offset_top = 261.0
+offset_right = 168.0
+offset_bottom = 331.0
 color = Color(0, 0, 0, 1)
 
-[connection signal="value_changed" from="PianoRoll/Alpha" to="." method="DrawKeyboard"]
+[node name="keyC" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 23.0
+offset_bottom = 66.0
+
+[node name="keyD" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 66.0
+
+[node name="keyCDborder" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 2.0
+offset_right = 32.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyCD" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 28.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyE" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 3.0
+offset_right = 71.0
+offset_bottom = 66.0
+
+[node name="keyDEborder" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 2.0
+offset_right = 60.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyDE" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 2.0
+offset_right = 56.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyF" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 3.0
+offset_right = 95.0
+offset_bottom = 66.0
+
+[node name="keyG" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 3.0
+offset_right = 119.0
+offset_bottom = 66.0
+
+[node name="keyFGborder" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyFG" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyA" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 3.0
+offset_right = 143.0
+offset_bottom = 66.0
+
+[node name="keyGAborder" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 2.0
+offset_right = 130.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyGA" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 2.0
+offset_right = 126.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyB" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 3.0
+offset_right = 167.0
+offset_bottom = 66.0
+
+[node name="keyABborder" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 2.0
+offset_right = 157.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyAB" type="ColorRect" parent="PianoRoll/Octave1"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 2.0
+offset_right = 153.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="Octave2" type="ColorRect" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 261.0
+offset_right = 336.0
+offset_bottom = 331.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyC" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 23.0
+offset_bottom = 66.0
+
+[node name="keyD" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 66.0
+
+[node name="keyCDborder" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 2.0
+offset_right = 32.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyCD" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 28.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyE" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 3.0
+offset_right = 71.0
+offset_bottom = 66.0
+
+[node name="keyDEborder" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 2.0
+offset_right = 60.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyDE" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 2.0
+offset_right = 56.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyF" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 3.0
+offset_right = 95.0
+offset_bottom = 66.0
+
+[node name="keyG" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 3.0
+offset_right = 119.0
+offset_bottom = 66.0
+
+[node name="keyFGborder" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyFG" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyA" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 3.0
+offset_right = 143.0
+offset_bottom = 66.0
+
+[node name="keyGAborder" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 2.0
+offset_right = 130.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyGA" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 2.0
+offset_right = 126.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyB" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 3.0
+offset_right = 167.0
+offset_bottom = 66.0
+
+[node name="keyABborder" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 2.0
+offset_right = 157.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyAB" type="ColorRect" parent="PianoRoll/Octave2"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 2.0
+offset_right = 153.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="Octave3" type="ColorRect" parent="PianoRoll"]
+layout_mode = 0
+offset_left = 333.0
+offset_top = 261.0
+offset_right = 504.0
+offset_bottom = 331.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyC" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 23.0
+offset_bottom = 66.0
+
+[node name="keyD" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 66.0
+
+[node name="keyCDborder" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 2.0
+offset_right = 32.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyCD" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 28.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyE" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 3.0
+offset_right = 71.0
+offset_bottom = 66.0
+
+[node name="keyDEborder" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 2.0
+offset_right = 60.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyDE" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 2.0
+offset_right = 56.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyF" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 3.0
+offset_right = 95.0
+offset_bottom = 66.0
+
+[node name="keyG" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 3.0
+offset_right = 119.0
+offset_bottom = 66.0
+
+[node name="keyFGborder" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 2.0
+offset_right = 103.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyFG" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 2.0
+offset_right = 99.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyA" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 3.0
+offset_right = 143.0
+offset_bottom = 66.0
+
+[node name="keyGAborder" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 2.0
+offset_right = 130.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyGA" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 2.0
+offset_right = 126.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="keyB" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 3.0
+offset_right = 167.0
+offset_bottom = 66.0
+
+[node name="keyABborder" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 2.0
+offset_right = 157.0
+offset_bottom = 46.0
+color = Color(0, 0, 0, 1)
+
+[node name="keyAB" type="ColorRect" parent="PianoRoll/Octave3"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 2.0
+offset_right = 153.0
+offset_bottom = 42.0
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
 [connection signal="value_changed" from="PianoRoll/KeyPrimary" to="." method="UpdateSecondary"]
 [connection signal="value_changed" from="PianoRoll/KeySecondary" to="." method="DrawKeyboard"]
 [connection signal="value_changed" from="PianoRoll/Mode" to="." method="DrawKeyboard"]
